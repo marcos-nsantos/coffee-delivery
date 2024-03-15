@@ -14,6 +14,16 @@ export const Aside = styled.aside`
   display: flex;
   align-items: center;
   gap: 12px;
+
+  & a {
+    display: flex;
+    align-items: center;
+
+    background-color: ${(props) => props.theme["yellow-light"]};
+
+    padding: 0.5rem;
+    border-radius: 6px;
+  }
 `;
 
 export const CityContent = styled.div`
@@ -29,14 +39,4 @@ export const CityContent = styled.div`
   span {
     color: ${(props) => props.theme["purple-dark"]};
   }
-`;
-
-export const ShoppingCartContent = styled.div`
-  display: flex;
-  align-items: center;
-
-  background-color: ${(props) => props.theme["yellow-light"]};
-
-  padding: 0.5rem;
-  border-radius: 6px;
 `;
