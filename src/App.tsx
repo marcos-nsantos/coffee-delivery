@@ -1,3 +1,10 @@
+import { Header } from "./components/Header";
+
 export function App() {
-  return <div>Coffee Delivery</div>;
+  return (
+    <>
+      <Header />
+      <div>Coffee Delivery</div>
+    </>
+  );
 }
