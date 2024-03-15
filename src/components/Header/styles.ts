@@ -24,14 +24,14 @@ export const CityContent = styled.div`
   padding: 0.5rem;
   border-radius: 6px;
 
-  background-color: #ebe5f9;
+  background-color: ${(props) => props.theme["purple-light"]};
 `;
 
 export const ShoppingCartContent = styled.div`
   display: flex;
   align-items: center;
 
-  background-color: #f1e9c9;
+  background-color: ${(props) => props.theme["yellow-light"]};
 
   padding: 0.5rem;
   border-radius: 6px;
