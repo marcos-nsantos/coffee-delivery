@@ -25,6 +25,10 @@ export const CityContent = styled.div`
   border-radius: 6px;
 
   background-color: ${(props) => props.theme["purple-light"]};
+
+  span {
+    color: ${(props) => props.theme["purple-dark"]};
+  }
 `;
 
 export const ShoppingCartContent = styled.div`
