@@ -1,15 +1,23 @@
 import styled from "styled-components";
 
-export const Intro = styled.section`
+interface IntroProps {
+  backgroundImage: string;
+}
+
+export const Hero = styled.section<IntroProps>`
+  height: 34rem;
+  padding: 5.875rem 0;
+
+  background-image: url(${(props) => props.backgroundImage});
+`;
+
+export const Intro = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  flex: 1;
 
   padding: 2rem;
 
   max-width: 72.5rem;
-  height: 34rem;
   margin: 0 auto;
 `;
 
