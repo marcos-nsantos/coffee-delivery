@@ -12,6 +12,19 @@ export function Home() {
 
         <CoffeeList>
           <CoffeeCard />
+          <CoffeeCard />
+          <CoffeeCard />
+          <CoffeeCard />
+          <CoffeeCard />
+          <CoffeeCard />
+          <CoffeeCard />
+          <CoffeeCard />
+          <CoffeeCard />
+          <CoffeeCard />
+          <CoffeeCard />
+          <CoffeeCard />
+          <CoffeeCard />
+          <CoffeeCard />
         </CoffeeList>
       </Container>
     </main>

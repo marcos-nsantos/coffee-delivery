@@ -17,7 +17,9 @@ export const CoffeeListTitle = styled.main`
 
 export const CoffeeList = styled.div`
   display: flex;
-  flex: 1;
+  flex-wrap: wrap;
+
+  gap: 2rem;
 
   max-width: 72.5rem;
 `;
