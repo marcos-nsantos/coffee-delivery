@@ -1,4 +1,3 @@
-import cafeExpressoTradicional from "../../../../assets/img/coffee/caffee-expresso-tradicional.png";
 import { Minus, Plus, ShoppingCart } from "@phosphor-icons/react";
 import { useTheme } from "styled-components";
 import {
@@ -15,65 +14,78 @@ import {
 import { useContext, useState } from "react";
 import { CoffeeContext } from "../../../../context/CoffeeProvider.tsx";
 
-export function CoffeeCard() {
+export interface CoffeeCardProps {
+  id: string;
+  name: string;
+  description: string;
+  tags: string[];
+  amount: number;
+  image: string;
+}
+
+interface Props {
+  coffee: CoffeeCardProps;
+}
+
+export function CoffeeCard({coffee}: Props) {
   const [quantity, setQuantity] = useState(1);
-  const { addCoffee } = useContext(CoffeeContext);
-
+  const {addCoffee} = useContext(CoffeeContext);
+  
   const theme = useTheme();
-
+  
   function incrementQuantity() {
     setQuantity((state) => state + 1);
   }
-
+  
   function decrementQuantity() {
     if (quantity > 1) {
       setQuantity((state) => state - 1);
     }
   }
-
+  
   function addCurrentCoffeeToCart() {
     const newCoffee = {
-      id: String(new Date().getTime()),
-      nome: "Expresso Tradicional",
-      imagem: cafeExpressoTradicional,
+      id: coffee.id,
+      nome: coffee.name,
+      imagem: coffee.image,
       quantity,
     };
     addCoffee(newCoffee);
     setQuantity(1);
     window.scroll(0, 0);
   }
-
+  
   return (
     <CoffeeItem>
-      <CoffeeImage src={cafeExpressoTradicional} />
-
+      <CoffeeImage src={coffee.image}/>
+      
       <CoffeeTags>
-        <span>Tradicional</span>
+        {coffee.tags.map((tag) => (
+          <span key={tag}>{tag}</span>
+        ))}
       </CoffeeTags>
-      <CoffeeTitle>Expresso Tradicional</CoffeeTitle>
-      <CoffeeDescription>
-        O tradicional café feito com água quente e grãos moídos
-      </CoffeeDescription>
-
+      <CoffeeTitle>{coffee.name}</CoffeeTitle>
+      <CoffeeDescription>{coffee.description}</CoffeeDescription>
+      
       <Control>
         <Price>
           <span>R$</span>
-          <span>9,99</span>
+          <span>{coffee.amount.toFixed(2)}</span>
         </Price>
-
+        
         <Order>
           <QuantityInput>
             <button onClick={decrementQuantity}>
-              <Minus size={14} />
+              <Minus size={14}/>
             </button>
             <span>{quantity}</span>
             <button onClick={incrementQuantity}>
-              <Plus size={14} />
+              <Plus size={14}/>
             </button>
           </QuantityInput>
-
+          
           <button onClick={addCurrentCoffeeToCart}>
-            <ShoppingCart size={22} color={theme["base-card"]} />
+            <ShoppingCart size={22} color={theme["base-card"]}/>
           </button>
         </Order>
       </Control>
