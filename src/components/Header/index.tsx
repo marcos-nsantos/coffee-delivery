@@ -3,9 +3,12 @@ import { MapPin, ShoppingCart } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
 import { useTheme } from "styled-components";
 import logo from "../../assets/img/logo.svg";
+import { useContext } from "react";
+import { CoffeeContext } from "../../context/CoffeeProvider.tsx";
 
 export function Header() {
   const theme = useTheme();
+  const { quantity } = useContext(CoffeeContext);
 
   return (
     <Container>
@@ -21,6 +24,7 @@ export function Header() {
 
         <Link to="/checkout" title="Carrinho">
           <ShoppingCart size={22} weight="fill" color={theme["yellow-dark"]} />
+          <span>{quantity}</span>
         </Link>
       </Aside>
     </Container>

@@ -12,10 +12,12 @@ import {
   Price,
   QuantityInput,
 } from "./styles.ts";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { CoffeeContext } from "../../../../context/CoffeeProvider.tsx";
 
 export function CoffeeCard() {
   const [quantity, setQuantity] = useState(1);
+  const { addCoffee } = useContext(CoffeeContext);
 
   const theme = useTheme();
 
@@ -27,6 +29,18 @@ export function CoffeeCard() {
     if (quantity > 1) {
       setQuantity((state) => state - 1);
     }
+  }
+
+  function addCurrentCoffeeToCart() {
+    const newCoffee = {
+      id: String(new Date().getTime()),
+      nome: "Expresso Tradicional",
+      imagem: cafeExpressoTradicional,
+      quantity,
+    };
+    addCoffee(newCoffee);
+    setQuantity(1);
+    window.scroll(0, 0);
   }
 
   return (
@@ -58,7 +72,7 @@ export function CoffeeCard() {
             </button>
           </QuantityInput>
 
-          <button>
+          <button onClick={addCurrentCoffeeToCart}>
             <ShoppingCart size={22} color={theme["base-card"]} />
           </button>
         </Order>
