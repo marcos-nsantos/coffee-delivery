@@ -24,7 +24,7 @@ export function Header() {
 
         <Link to="/checkout" title="Carrinho">
           <ShoppingCart size={22} weight="fill" color={theme["yellow-dark"]} />
-          <span>{quantity}</span>
+          {quantity > 0 && <span>{quantity}</span>}
         </Link>
       </Aside>
     </Container>

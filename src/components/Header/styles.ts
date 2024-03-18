@@ -15,14 +15,36 @@ export const Aside = styled.aside`
   align-items: center;
   gap: 12px;
 
-  & a {
+  a {
     display: flex;
     align-items: center;
+
+    position: relative;
 
     background-color: ${(props) => props.theme["yellow-light"]};
 
     padding: 0.5rem;
     border-radius: 6px;
+
+    span {
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: ${(props) => props.theme["white"]};
+      background-color: ${(props) => props.theme["yellow-dark"]};
+
+      border-radius: 50%;
+      width: 1.25rem;
+      height: 1.25rem;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: translate(50%, -50%);
+    }
   }
 `;
 
