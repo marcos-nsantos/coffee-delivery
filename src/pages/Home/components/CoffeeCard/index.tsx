@@ -12,9 +12,22 @@ import {
   Price,
   QuantityInput,
 } from "./styles.ts";
+import { useState } from "react";
 
 export function CoffeeCard() {
+  const [quantity, setQuantity] = useState(1);
+
   const theme = useTheme();
+
+  function incrementQuantity() {
+    setQuantity((state) => state + 1);
+  }
+
+  function decrementQuantity() {
+    if (quantity > 1) {
+      setQuantity((state) => state - 1);
+    }
+  }
 
   return (
     <CoffeeItem>
@@ -36,11 +49,11 @@ export function CoffeeCard() {
 
         <Order>
           <QuantityInput>
-            <button>
+            <button onClick={decrementQuantity}>
               <Minus size={14} />
             </button>
-            <span>1</span>
-            <button>
+            <span>{quantity}</span>
+            <button onClick={incrementQuantity}>
               <Plus size={14} />
             </button>
           </QuantityInput>
