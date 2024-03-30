@@ -1,5 +1,10 @@
 import {
   AddressForm,
+  CartTotal,
+  CartTotalInfo,
+  CheckoutButton,
+  Coffee,
+  CoffeeInfo,
   Container,
   FormContainer,
   Heading,
@@ -12,13 +17,29 @@ import {
   CurrencyDollar,
   MapPin,
   Money,
+  Trash,
 } from "@phosphor-icons/react";
 import { TextInput } from "./components/TextInput";
 import { useTheme } from "styled-components";
 import { PaymentOption } from "./components/PaymentOption";
+import { useContext } from "react";
+import { CoffeeContext } from "../../context/CoffeeProvider.tsx";
+import { QuantityInput } from "../../components/QuantityInput";
 
 export function Checkout() {
   const theme = useTheme();
+  const { cart, incrementCoffee, decrementCoffee, removeCoffee } =
+    useContext(CoffeeContext);
+
+  function getTotalPrice() {
+    let total = 0;
+
+    cart.forEach((coffee) => {
+      total += coffee.price * coffee.quantity;
+    });
+
+    return total;
+  }
 
   return (
     <Container>
@@ -84,6 +105,58 @@ export function Checkout() {
             </PaymentOptions>
           </FormContainer>
         </form>
+      </InfoContainer>
+
+      <InfoContainer>
+        <h2>Cafés selecionados</h2>
+
+        <CartTotal>
+          {cart.map((coffee) => (
+            <Coffee>
+              <div>
+                <img src={coffee.imagem} alt={coffee.nome} />
+
+                <div>
+                  <span>{coffee.nome}</span>
+
+                  <CoffeeInfo>
+                    <QuantityInput
+                      quantity={coffee.quantity}
+                      incrementQuantity={() => incrementCoffee(coffee.id)}
+                      decrementQuantity={() => decrementCoffee(coffee.id)}
+                    />
+
+                    <button onClick={() => removeCoffee(coffee.id)}>
+                      <Trash color={theme["purple"]} />
+                      <span>Remover</span>
+                    </button>
+                  </CoffeeInfo>
+                </div>
+              </div>
+
+              <aside>R$ {(coffee.price * coffee.quantity).toFixed(2)}</aside>
+            </Coffee>
+          ))}
+
+          <CartTotalInfo>
+            <div>
+              <span>Total de itens</span>
+              <span>R$ {getTotalPrice().toFixed(2)}</span>
+            </div>
+
+            <div>
+              <span>Entrega</span>
+              <span>R$ 9,99</span>
+            </div>
+
+            <div>
+              <span>Total</span>
+              <span>R$ {(getTotalPrice() + 9.99).toFixed(2)}</span>
+            </div>
+          </CartTotalInfo>
+
+          <CheckoutButton type="submit">Confirmar pedido</CheckoutButton>
+        </CartTotal>
       </InfoContainer>
     </Container>
   );

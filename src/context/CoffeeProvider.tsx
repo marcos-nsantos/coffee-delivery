@@ -1,10 +1,18 @@
 import { Coffee, coffeeReducer } from "../reducers/coffes/reducer.ts";
 import { createContext, ReactNode, useReducer } from "react";
-import { addNewCoffeeAction } from "../reducers/coffes/action.ts";
+import {
+  addNewCoffeeAction,
+  decrementCoffeeAction,
+  incrementCoffeeAction,
+  removeCoffeeAction,
+} from "../reducers/coffes/action.ts";
 
 interface CoffeeContextType {
   cart: Coffee[];
   addCoffee: (coffee: Coffee) => void;
+  removeCoffee: (coffeeId: string) => void;
+  incrementCoffee: (coffeeId: string) => void;
+  decrementCoffee: (coffeeId: string) => void;
   quantity: number;
 }
 
@@ -23,6 +31,18 @@ export function CoffeeProvider({ children }: CarContextProviderProps) {
     dispatch(addNewCoffeeAction(coffee));
   }
 
+  function removeCoffee(coffeeId: string) {
+    dispatch(removeCoffeeAction(coffeeId));
+  }
+
+  function incrementCoffee(coffeeId: string) {
+    dispatch(incrementCoffeeAction(coffeeId));
+  }
+
+  function decrementCoffee(coffeeId: string) {
+    dispatch(decrementCoffeeAction(coffeeId));
+  }
+
   function quantityOfAllCoffees() {
     return state.coffees.reduce((acc, coffee) => {
       return acc + coffee.quantity;
@@ -34,6 +54,9 @@ export function CoffeeProvider({ children }: CarContextProviderProps) {
       value={{
         cart: state.coffees,
         addCoffee,
+        removeCoffee,
+        incrementCoffee,
+        decrementCoffee,
         quantity: quantityOfAllCoffees(),
       }}
     >
