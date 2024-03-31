@@ -1,18 +1,25 @@
 import { Container, ErrorMessage } from "./style.ts";
-import { FieldError } from "react-hook-form";
 import { InputHTMLAttributes } from "react";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
-  error?: FieldError;
+  error?: string;
   gridArea: string;
+  register: any;
+  value: string;
 }
 
-export function TextInput({ error, gridArea, ...rest }: Props) {
+export function TextInput({
+  error,
+  gridArea,
+  register,
+  value,
+  ...rest
+}: Props) {
   return (
     <Container style={{ gridArea: gridArea }}>
-      <input {...rest} />
+      <input {...rest} {...register(value)} />
 
-      {error && <ErrorMessage>{error.message}</ErrorMessage>}
+      {error && <ErrorMessage>{error}</ErrorMessage>}
     </Container>
   );
 }

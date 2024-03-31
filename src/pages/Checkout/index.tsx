@@ -25,8 +25,44 @@ import { PaymentOption } from "./components/PaymentOption";
 import { useContext } from "react";
 import { CoffeeContext } from "../../context/CoffeeProvider.tsx";
 import { QuantityInput } from "../../components/QuantityInput";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+type FormInputs = {
+  cep: number;
+  street: string;
+  number: string;
+  fullAddress: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+  paymentMethod: "credit" | "debit" | "cash";
+};
+
+const newOrder = z.object({
+  cep: z.number({ invalid_type_error: "Informe o CEP" }),
+  street: z.string().min(1, "Informe a rua"),
+  number: z.string().min(1, "Informe o número"),
+  fullAddress: z.string(),
+  neighborhood: z.string().min(1, "Informe o bairro"),
+  city: z.string().min(1, "Informe a cidade"),
+  state: z.string().min(1, "Informe a UF"),
+  paymentMethod: z.enum(["credit", "debit", "cash"], {
+    invalid_type_error: "Informe um método de pagamento",
+  }),
+});
 
 export function Checkout() {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormInputs>({
+    resolver: zodResolver(newOrder),
+  });
+
   const theme = useTheme();
   const { cart, incrementCoffee, decrementCoffee, removeCoffee } =
     useContext(CoffeeContext);
@@ -41,12 +77,19 @@ export function Checkout() {
     return total;
   }
 
+  const selectedPaymentMethod = watch("paymentMethod");
+  console.log(selectedPaymentMethod);
+
+  function onSubmit(data: FormInputs) {
+    console.log(data);
+  }
+
   return (
     <Container>
       <InfoContainer>
         <h2>Complete seu pedido</h2>
 
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)} id="order">
           <FormContainer>
             <Heading>
               <MapPin size={22} weight="fill" color={theme["yellow-dark"]} />
@@ -58,17 +101,62 @@ export function Checkout() {
             </Heading>
 
             <AddressForm>
-              <TextInput type="text" placeholder="CEP" gridArea="cep" />
-              <TextInput type="text" placeholder="Rua" gridArea="rua" />
-              <TextInput type="text" placeholder="Número" gridArea="numero" />
+              <TextInput
+                type="text"
+                placeholder="CEP"
+                gridArea="cep"
+                error={errors.cep?.message}
+                register={register}
+                value="cep"
+              />
+              <TextInput
+                type="text"
+                placeholder="Rua"
+                gridArea="rua"
+                error={errors.street?.message}
+                register={register}
+                value="street"
+              />
+              <TextInput
+                type="text"
+                placeholder="Número"
+                gridArea="numero"
+                error={errors.number?.message}
+                register={register}
+                value="number"
+              />
               <TextInput
                 type="text"
                 placeholder="Complemento"
                 gridArea="complemento"
+                error={errors.fullAddress?.message}
+                register={register}
+                value="fullAddress"
               />
-              <TextInput type="text" placeholder="Bairro" gridArea="bairro" />
-              <TextInput type="text" placeholder="Cidade" gridArea="cidade" />
-              <TextInput type="text" placeholder="UF" gridArea="uf" />
+              <TextInput
+                type="text"
+                placeholder="Bairro"
+                gridArea="bairro"
+                error={errors.neighborhood?.message}
+                register={register}
+                value="neighborhood"
+              />
+              <TextInput
+                type="text"
+                placeholder="Cidade"
+                gridArea="cidade"
+                error={errors.city?.message}
+                register={register}
+                value="city"
+              />
+              <TextInput
+                type="text"
+                placeholder="UF"
+                gridArea="uf"
+                error={errors.state?.message}
+                register={register}
+                value="state"
+              />
             </AddressForm>
           </FormContainer>
 
@@ -87,17 +175,32 @@ export function Checkout() {
 
             <PaymentOptions>
               <PaymentOptions>
-                <PaymentOption value="credit" selected={true}>
+                <PaymentOption
+                  selected={selectedPaymentMethod === "credit"}
+                  value="credit"
+                  register={register}
+                  name="paymentMethod"
+                >
                   <CreditCard size={16} color={theme["purple"]} />
                   <span>Cartão de Crédito</span>
                 </PaymentOption>
 
-                <PaymentOption value="debit" selected={false}>
+                <PaymentOption
+                  selected={selectedPaymentMethod === "debit"}
+                  value="debit"
+                  register={register}
+                  name="paymentMethod"
+                >
                   <Bank size={16} color={theme["purple"]} />
                   <span>Cartão de Débito</span>
                 </PaymentOption>
 
-                <PaymentOption value="money" selected={false}>
+                <PaymentOption
+                  selected={selectedPaymentMethod === "cash"}
+                  value="cash"
+                  register={register}
+                  name="paymentMethod"
+                >
                   <Money size={16} color={theme["purple"]} />
                   <span>Dinheiro</span>
                 </PaymentOption>
@@ -112,7 +215,7 @@ export function Checkout() {
 
         <CartTotal>
           {cart.map((coffee) => (
-            <Coffee>
+            <Coffee key={coffee.id}>
               <div>
                 <img src={coffee.imagem} alt={coffee.nome} />
 
@@ -155,7 +258,9 @@ export function Checkout() {
             </div>
           </CartTotalInfo>
 
-          <CheckoutButton type="submit">Confirmar pedido</CheckoutButton>
+          <CheckoutButton type="submit" form="order">
+            Confirmar pedido
+          </CheckoutButton>
         </CartTotal>
       </InfoContainer>
     </Container>

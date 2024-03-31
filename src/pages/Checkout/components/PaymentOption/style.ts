@@ -1,11 +1,10 @@
 import styled from "styled-components";
-import { InputHTMLAttributes } from "react";
 
-export interface ContainerProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface ContainerProps {
   selected: boolean;
 }
 
-export const Container = styled.label<ContainerProps>`
+export const Container = styled.div<ContainerProps>`
   display: flex;
   align-items: center;
   gap: 12px;
@@ -34,10 +33,6 @@ export const Container = styled.label<ContainerProps>`
     `}
   &:hover {
     background-color: ${(props) => props.theme["base-hover"]};
-  }
-
-  input {
-    display: none;
   }
 
   label {

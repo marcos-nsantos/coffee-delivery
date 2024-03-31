@@ -1,11 +1,27 @@
-import { Container, ContainerProps } from "./style.ts";
+import { Container } from "./style.ts";
+import { InputHTMLAttributes } from "react";
 
-export function PaymentOption({ children, selected, ...rest }: ContainerProps) {
+export interface Props extends InputHTMLAttributes<HTMLInputElement> {
+  selected: boolean;
+  register: any;
+  value: string;
+}
+
+export function PaymentOption({
+  children,
+  selected,
+  register,
+  ...rest
+}: Props) {
   return (
     <Container selected={selected}>
+      <input
+        id="paymentMethod"
+        type="radio"
+        {...rest}
+        {...register("paymentMethod")}
+      />
       {children}
-      <label htmlFor="payment"></label>
-      <input id="payment" type="radio" {...rest} />
     </Container>
   );
 }
